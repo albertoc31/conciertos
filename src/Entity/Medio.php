@@ -74,4 +74,9 @@ class Medio
 
         return $this;
     }
+
+    // Registra el método mágico para imprimir el nombre
+    public function __toString() {
+        return $this->name;
+    }
 }
