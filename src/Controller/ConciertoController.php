@@ -5,10 +5,15 @@ namespace App\Controller;
 use App\Entity\Concierto;
 use App\Form\ConciertoType;
 use App\Repository\ConciertoRepository;
+use App\Service\NotificacionRentabilidad;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 
 /**
  * @Route("/concierto")
@@ -28,7 +33,7 @@ class ConciertoController extends AbstractController
     /**
      * @Route("/new", name="concierto_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, NotificacionRentabilidad $notificacionRentabilidad): Response
     {
         $concierto = new Concierto();
         $form = $this->createForm(ConciertoType::class, $concierto);
@@ -38,6 +43,12 @@ class ConciertoController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($concierto);
             $entityManager->flush();
+
+            /* Una vez persistimos el nuevo concierto, notificamos la rentabilidad
+            Podríamos establecer distintos metodos de notificación según preferencias
+            del promotor, pero queda fuera del alcance de esta prueba
+            */
+            $notificacionRentabilidad->sendEmailRentabilidad($concierto);
 
             return $this->redirectToRoute('concierto_index', [], Response::HTTP_SEE_OTHER);
         }
