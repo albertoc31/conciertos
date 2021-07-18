@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Concierto{% endblock %}
+
+{% block body %}
+    <h1>Concierto</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ concierto.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ concierto.name }}</td>
+            </tr>
+            <tr>
+                <th>Numero_espectadores</th>
+                <td>{{ concierto.numeroEspectadores }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ concierto.fecha ? concierto.fecha|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Rentabilidad</th>
+                <td>{{ concierto.rentabilidad }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('concierto_index') }}">back to list</a>
+
+    <a href="{{ path('concierto_edit', {'id': concierto.id}) }}">edit</a>
+
+    {{ include('concierto/_delete_form.html.twig') }}
+{% endblock %}
