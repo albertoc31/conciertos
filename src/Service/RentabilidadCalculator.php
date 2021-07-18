@@ -17,6 +17,7 @@ class RentabilidadCalculator
         foreach ($grupos as $grupo)
         {
             $costes_concierto += $grupo->getCache();
+            $costes_concierto += $entrada * 0.1;
         }
         $rentabilidad = $entrada - $costes_concierto;
 
